@@ -1,9 +1,8 @@
-## Get started
-
 <p align="center">
     <img src="figures/spot_logo.png" alt="spot_logo">
 </p>
 
+## Get started
 The SPOT package is intended to solve Satellite Mission Planning with Rydberg
 Atoms.
 
