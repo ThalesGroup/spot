@@ -1,0 +1,33 @@
+[project]
+name = "spot"
+version = "0.1.0"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "plotly",
+    "gymnasium",
+    "pulser",
+    "ephem",
+    "keras",
+    "tensorflow",
+    "maximum-independent-set",
+    "scikit-learn",
+    "pandas",
+    "spektral",
+    "dash",
+    "dash-bootstrap-components",
+    "flask-cors"
+]
+requires-python = ">=3.10"
+
+authors = [
+  {name = "Michel Nowak", email = "michel.nowak@thalesgroup.com"},
+]
+
+description = "Satellite Mission Planning with Rydberg Atoms"
+readme = "README.md"
+license-files = ["LICENCE.txt"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
