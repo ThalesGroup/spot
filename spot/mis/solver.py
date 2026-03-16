@@ -18,10 +18,6 @@ from org.orekit.bodies import GeodeticPoint
 
 from spot.rl.environments.utils import datetime_to_absolutedate
 from spot.rl.environments.utils import absolutedate_to_datetime
-from spot.mis.distributed_solver import ExactDistributedSolver
-from spot.mis.distributed_solver import GreedyDistributedSolver
-from spot.mis.distributed_solver import CoreDistributedSolver
-from spot.mis.distributed_solver import KaHIPDistributedSolver
 from spot.mis.postprocessing import Postprocessor
 from spot.metrics.dashboard import MetricsDashboard
 from spot.rl.environments.satellite import datetime_to_absolutedate
@@ -277,7 +273,7 @@ class Solver():
             discretizing_array=None,
             greedy=True,
             split_into_subgraphs=False,
-            save_graphs=False
+            save_graphs=False,
             plot_graphs=False):
         """ Run
         """
@@ -352,9 +348,6 @@ class Solver():
                 self.num_satellites,
                 self.num_requests,
                 global_plan)
-
-        self.dashboard.update()
-        self.dashboard.save(self.prefix)
 
         results = {}
         for metric in self.dashboard.metrics:
