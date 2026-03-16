@@ -13,7 +13,6 @@ dependencies = [
     "maximum-independent-set",
     "scikit-learn",
     "pandas",
-    "spektral",
     "dash",
     "dash-bootstrap-components",
     "flask-cors"
