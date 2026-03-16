@@ -267,12 +267,7 @@ class Solver():
             requests,
             priorities,
             satellites,
-            max_subgraph_size=80,
-            start_dates=None,
-            allow_requests=None,
-            discretizing_array=None,
             greedy=True,
-            split_into_subgraphs=False,
             save_graphs=False,
             plot_graphs=False):
         """ Run
@@ -312,28 +307,25 @@ class Solver():
         # prepare MIS
         mis = []
 
-        # split into subgraphs
-        if split_into_subgraphs:
+        subgraphs = [graph.subgraph(c) for c in nx.connected_components(graph)]
 
-            subgraphs = [graph.subgraph(c) for c in nx.connected_components(graph)]
+        for graph_id, subgraph in enumerate(subgraphs):
+            subgraph_len = len(subgraph)
+            pos = nx.get_node_attributes(subgraph, "pos")
+            subgraph = nx.convert_node_labels_to_integers(
+                subgraph,
+                node_attribute="solving_label")
 
-            for graph_id, subgraph in enumerate(subgraphs):
-                subgraph_len = len(subgraph)
-                pos = nx.get_node_attributes(subgraph, "pos")
-                subgraph = nx.convert_node_labels_to_integers(
+            mis += self.get_maximum_independent_set(graph)
+
+            if save_graphs:
+                self.save_graph(graph_id, subgraph)
+
+            if plot_graphs:
+                postprocessor = Postprocessor(self.num_satellites, self.num_requests)
+                postprocessor.plot_graph(
                     subgraph,
-                    node_attribute="solving_label")
-
-                mis += self.get_maximum_independent_set(graph)
-
-                if save_graphs:
-                    self.save_graph(graph_id, subgraph)
-
-                if plot_graphs:
-                    postprocessor = Postprocessor(self.num_satellites, self.num_requests)
-                    postprocessor.plot_graph(
-                        subgraph,
-                        prefix=f"graphs_{self.delta_t}/{self.prefix}_{graph_id}")
+                    prefix=f"graphs_{self.delta_t}/{self.prefix}_{graph_id}")
 
         global_plan = self.merge_local_solutions(mis)
 
