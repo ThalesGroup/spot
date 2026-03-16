@@ -313,8 +313,8 @@ class Solver():
             postprocessor.plot_graph(graph, prefix=f"graphs_{self.delta_t}/{self.prefix}_total")
 
 
-        # compute Maximum Independent Set
-        mis = self.get_maximum_independent_set(graph)
+        # prepare MIS
+        mis = []
 
         # split into subgraphs
         if split_into_subgraphs:
@@ -324,7 +324,11 @@ class Solver():
             for graph_id, subgraph in enumerate(subgraphs):
                 subgraph_len = len(subgraph)
                 pos = nx.get_node_attributes(subgraph, "pos")
-                subgraph = nx.convert_node_labels_to_integers(subgraph)
+                subgraph = nx.convert_node_labels_to_integers(
+                    subgraph,
+                    node_attribute="solving_label")
+
+                mis += self.get_maximum_independent_set(graph)
 
                 if save_graphs:
                     self.save_graph(graph_id, subgraph)
