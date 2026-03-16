@@ -1,6 +1,6 @@
 [project]
 name = "spot"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
     "numpy",
     "matplotlib",
@@ -25,8 +25,10 @@ authors = [
 
 description = "Satellite Mission Planning with Rydberg Atoms"
 readme = "README.md"
-license-files = ["LICENCE.txt"]
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["spot/*"]
