@@ -47,8 +47,7 @@ class SatelliteEnvironment(Env):
     def __init__(self, shift_day=0):
         """ Initializer
         """
-        # self.date = dt.date(2026, 3, 9) + dt.timedelta(days=int(shift_day))
-        self.date = dt.datetime.utcnow() + dt.timedelta(days=int(shift_day))
+        self.date = dt.datetime(2026, 3, 9,0,0,0,0) + dt.timedelta(days=int(shift_day))
         self.initial_date = self.date
         self.observation_shape = (1)
         self.observation_space = spaces.Box(
