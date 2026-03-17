@@ -19,7 +19,7 @@ class NetworkXSolver(Solver):
     def get_maximum_independent_set(
             self,
             graph,
-            fixed_nodes=None):
+            subgraph_id=0):
         """
         """
         pos = nx.get_node_attributes(graph, "pos")
