@@ -145,7 +145,7 @@ class Solver():
         """
 
         collected_opportunities= []
-        # sampled_collected_opportunities=[]
+        sampled_collected_opportunities=[]
 
         if discretizing_array is not None:
             if not isinstance(discretizing_array, np.array):
@@ -354,7 +354,7 @@ class Solver():
         for metric in self.dashboard.metrics:
             results[f"{metric.name}"] = metric.data
 
-        results["mis"] = mis
+        results["global_plan"] = global_plan
 
         with open(f'{self.prefix}_result.json', 'w') as f:
             json.dump(results, f)
