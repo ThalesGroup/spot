@@ -16,11 +16,10 @@ import orekit
 orekit.initVM()
 from org.orekit.bodies import GeodeticPoint
 
-from spot.rl.environments.utils import datetime_to_absolutedate
-from spot.rl.environments.utils import absolutedate_to_datetime
 from spot.mis.postprocessing import Postprocessor
 from spot.metrics.dashboard import MetricsDashboard
-from spot.rl.environments.satellite import datetime_to_absolutedate
+from spot.rl.environments.utils import datetime_to_absolutedate
+from spot.rl.environments.utils import absolutedate_to_datetime
 
 class CollectOpportunity:
     """
@@ -146,7 +145,7 @@ class Solver():
         """
 
         collected_opportunities= []
-        sampled_collected_opportunities=[]
+        # sampled_collected_opportunities=[]
 
         if discretizing_array is not None:
             if not isinstance(discretizing_array, np.array):
@@ -171,7 +170,7 @@ class Solver():
                     if dto_start<1:
                         continue
                     dto_end = dto[1]
-                    if dto_start -40 < discretizing_array[i] and \
+                    if dto_start < discretizing_array[i] and \
                        discretizing_array[i] <= dto_end:
 
                         collect_opportunity = CollectOpportunity(
@@ -259,7 +258,7 @@ class Solver():
     def save_graph(self, graph_id, graph):
         """
         """
-        with open(f"graphs_{self.delta_t}/{self.prefix}_subgraph_{graph_id}.nx", 'wb') as file:
+        with open(f"{self.prefix}_subgraph_{graph_id}.nx", 'wb') as file:
             pickle.dump(graph, file)
 
     def run(self,
@@ -282,41 +281,51 @@ class Solver():
         self.num_requests = len(priorities)
         self.requests_positions = requests
 
+        print("discretize")
         # discretize data take opportunities
         collect_opportunities, sorted_collected_opportunities = self.discretize_dtos( \
                 dtos,
                 priorities)
 
+        print("collect")
         if greedy:
             opportunities = collect_opportunities
         else:
             opportunities = self.sample_opportunities(sorted_collected_opportunities)
 
+        print("generate graph")
+
         graph = self.graph_from_collect_opportunities(
             opportunities,
             priorities)
+        print(graph)
 
         if save_graphs:
             self.save_graph("total", graph)
     
         if plot_graphs:
             postprocessor = Postprocessor(self.num_satellites, self.num_requests)
-            postprocessor.plot_graph(graph, prefix=f"graphs_{self.delta_t}/{self.prefix}_total")
+            postprocessor.plot_graph(graph, prefix=f"{self.prefix}_total")
 
 
         # prepare MIS
         mis = []
 
+        pos = nx.get_node_attributes(graph, "pos")
+
+        print("subgraphs")
         subgraphs = [graph.subgraph(c) for c in nx.connected_components(graph)]
 
         for graph_id, subgraph in enumerate(subgraphs):
-            subgraph_len = len(subgraph)
-            pos = nx.get_node_attributes(subgraph, "pos")
-            subgraph = nx.convert_node_labels_to_integers(
-                subgraph,
-                node_attribute="solving_label")
+            subgraph_len = subgraph.number_of_nodes()
 
-            mis += self.get_maximum_independent_set(graph)
+            print("subgraphs mis", graph_id, subgraph_len, len(subgraph.nodes()))
+            if subgraph_len <= 2:
+                for node in subgraph.nodes():
+                    mis += [pos.get(node)]
+                continue
+
+            mis += self.get_maximum_independent_set(subgraph, subgraph_id=graph_id)
 
             if save_graphs:
                 self.save_graph(graph_id, subgraph)
@@ -325,7 +334,7 @@ class Solver():
                 postprocessor = Postprocessor(self.num_satellites, self.num_requests)
                 postprocessor.plot_graph(
                     subgraph,
-                    prefix=f"graphs_{self.delta_t}/{self.prefix}_{graph_id}")
+                    prefix=f"{self.prefix}_{graph_id}")
 
         global_plan = self.merge_local_solutions(mis)
 
@@ -345,10 +354,9 @@ class Solver():
         for metric in self.dashboard.metrics:
             results[f"{metric.name}"] = metric.data
 
+        results["mis"] = mis
+
         with open(f'{self.prefix}_result.json', 'w') as f:
             json.dump(results, f)
-        
-        # save mis into results
-        results["mis"] = mis
 
         return graph, results
