@@ -31,7 +31,8 @@ class Postprocessor:
 
         pos = nx.get_node_attributes(graph, "pos")
         for node_id, node in enumerate(graph):
-            satellite_id = pos[node_id][2]
+            pos_values = list(pos.values())
+            satellite_id = pos_values[node_id][2]
             if mis is None:
                 color_map.append(vir(norm(satellite_id)))
                 node_size_map.append(100)
