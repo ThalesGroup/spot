@@ -3,14 +3,14 @@
 # Author : Michel Nowak <michel.nowak@thalesgroup.com>
 # Date   : 16.10.2025
 
-from spot.mis.solver import Solver
+from spot.mis.rydberg.solver import RydbergSolver
 from spot.mis.rydberg.plot import RydbergPlotter
 from spot.mis.rydberg.embeddings.autoencoder import AutoencoderEmbedding
 
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
-import pickle
+import json
 
 from pulser import Pulse, Sequence
 from pulser_simulation import QutipEmulator
@@ -18,7 +18,7 @@ from pulser.devices import MockDevice
 from pulser.waveforms import InterpolatedWaveform
 
 
-class PulseSolver(Solver):
+class PulseSolver(RydbergSolver):
     """ PulseSolver
     """
     def __init__(self, params):
@@ -38,7 +38,6 @@ class PulseSolver(Solver):
     def schedule_pulses(self, graph):
         """ Schedules pulses
         """
-
         self.target_amplitude = 15
         initial_detuning = -40
         final_detuning = - initial_detuning
@@ -47,7 +46,7 @@ class PulseSolver(Solver):
         trap_ids = {v for v in self.embedder.traps}
         reg = self.embedder.layout.define_register(*trap_ids)
 
-        self.seq = Sequence(reg, MockDevice)
+        self.seq = Sequence(reg, self.get_device())
         
         # global pulse
         adiabatic_pulse = Pulse(
@@ -89,22 +88,22 @@ class PulseSolver(Solver):
     def run_simulation(self):
         """
         """
-        simul = QutipEmulator.from_sequence(self.seq, sampling_rate=1)
+        backend = self.get_backend(self.seq)
 
         try:
-            results = simul.run()
+            results = backend.run()
         except:
             print("Warning: graph skipped because qutip cannot solve.")
             return None
 
-        final = results.get_final_state()
-        count_dict = results.sample_final_state()
+        count_dict = results.final_bitstrings
 
         return count_dict
        
     def extract_maximum_independent_set(self, probs, graph):
         """
         """
+        print(probs)
         if probs is None or len(probs) ==0:
             return [], []
 
@@ -115,48 +114,51 @@ class PulseSolver(Solver):
         if len(mask)==0:
             return [], []
 
-        mis = []
+        solving_mis = []
         integer_mis = []
 
-        for node_id, (_, node_value) in \
-                enumerate(dict(graph.nodes(data="solving_label")).items()):
+        pos = nx.get_node_attributes(graph, "pos")
+
+        for node_id, node_value in enumerate(pos.values()):
             if node_id>=len(mask):
                 continue
             if mask[node_id] == 1:
-                mis.append(node_value)
+                solving_mis.append(node_value)
                 integer_mis.append(node_id)
 
-        return mis, integer_mis
+        print(solving_mis)
+        return solving_mis, integer_mis
 
     def get_maximum_independent_set(
         self,
         graph,
-        plot_embedding=False,
-        plot_mis=False,
-        suffix=""):
+        subgraph_id=0,
+        plot_embedding=True,
+        plot_mis=True):
         """
         """
-        if plot_embedding or plot_mis:
-            plotter = RydbergPlotter(self.embedder)
-
         # compute embedding
         self.prepare_atoms_spatially(
                 graph,
-                f"{self.prefix}_{suffix}")
+                f"{self.prefix}_{subgraph_id}")
+
+        if plot_embedding or plot_mis:
+            plotter = RydbergPlotter(self.embedder)
 
         embedded_graph = self.embedder.embedded_graph
 
         # save embedding
-        if plot_embedder:
+        if plot_embedding:
             plotter.plot_layout(
                     embedded_graph,
-                    file_name=f"{self.prefix}_{i}_{num_nodes}_embedding.png")
+                    file_name=f"{self.prefix}_{subgraph_id}_embedding.png")
 
         # schedule pulse with embedded register
         self.schedule_pulses(embedded_graph)
 
         # if number of nodes is not preserved after embedding, skip graph
         if len(embedded_graph.nodes()) != len(graph.nodes()):
+            print("Could not find embedding")
             return []
 
         # run simulation
@@ -171,16 +173,16 @@ class PulseSolver(Solver):
         solving_label_mis, integer_mis = \
                 self.extract_maximum_independent_set(counts, graph)
 
-        mis += solving_label_mis
-
         # plot final configuration of atoms with MIS
         if plot_mis:
             plotter.plot_layout(
                     embedded_graph,
-                    file_name=f"{self.prefix}_{i}_sampled_mis.png",
+                    file_name=f"{self.prefix}_{subgraph_id}_sampled_mis.png",
                     mis_ids=integer_mis)
+        pulse_results = {}
+        pulse_results["nodes"] = solving_label_mis
 
-        with open(f"{self.prefix}_graph_{i}.mis", 'wb') as file:
-            pickle.dump(mis, file)
+        with open(f"{self.prefix}_pulse_{subgraph_id}.json", 'w') as f:
+            json.dump(pulse_results, f)
 
-        return mis
+        return solving_label_mis

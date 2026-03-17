@@ -80,8 +80,8 @@ class AutoencoderEmbedding(UnitDiskEmbedding):
         """ Compute distances of a register containes in self.positions
         """
         distances = []
-        for i in self.graph.nodes():
-            for j in self.graph.nodes():
+        for i in range(self.num_nodes):
+            for j in range(self.num_nodes):
                 if i<j:
                     distances.append(tf.sqrt(self.squared_distance(i, j)))
 
@@ -138,8 +138,8 @@ class AutoencoderEmbedding(UnitDiskEmbedding):
     def run(
         self,
         graph,
-        save_loss=False,
-        plot_loss=False):
+        save_loss=True,
+        plot_loss=True):
         """ Trains the autoencoder
         """
         self.graph = graph

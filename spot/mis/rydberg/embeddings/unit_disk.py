@@ -70,8 +70,6 @@ class UnitDiskEmbedding:
         """
         """
         results = {}
-        # results["graph_distance"] = nx.graph_edit_distance( \
-                # self.graph, self.embedded_graph)
         results["optimized_layout"] = self.optimized_layout
         results["traps_coords"] = self.layout.coords.tolist()
         results["qubit_trap_id"] = self.traps
@@ -85,7 +83,7 @@ class UnitDiskEmbedding:
         # retrieve embedded_graph
         embedded_graph = nx.Graph()
 
-        for node_id in self.graph.nodes():
+        for node_id in range(self.num_nodes):
             embedded_graph.add_node(
                     node_id,
                     pos=self.layout.coords[self.traps[node_id]])
