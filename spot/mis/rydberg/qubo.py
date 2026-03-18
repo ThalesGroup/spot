@@ -15,7 +15,7 @@ from pulser.devices import AnalogDevice
 from pulser_pasqal.backends import EmuMPSBackend
 from mis import MISInstance, MISSolution
 from mis import MISSolver, MISInstance, BackendConfig, BackendType
-from qubosolver.config import SolverConfig, PasqalCloud, QPU, RemoteEmulator
+from qubosolver.config import SolverConfig
 from qubosolver import QUBOInstance
 from qubosolver.solver import QuboSolver
 
@@ -58,8 +58,8 @@ class SpotQuboSolver(RydbergSolver):
              self.backend_type == "fresnel_can1":
             qubo_config = SolverConfig(
                 use_quantum=True,
-                backend= self.get_backend(),
-                device= self.get_device(),
+                backend= self.get_qubo_backend(),
+                device= self.get_qubo_device(),
             )
         solver = QuboSolver(qubo_mis, qubo_config)
 
