@@ -36,11 +36,6 @@ from spot.rl.environments.utils import datetime_to_absolutedate
 from spot.rl.environments.utils import absolutedate_to_datetime
 from spot.rl.environments.utils import compute_tmax
 
-def absolute_date(date_str):
-    """
-    """
-    return AbsoluteDate(date_str, TimeScalesFactory.getUTC())
-
 class SatelliteEnvironment(Env):
     """ Satellite gym environment
     """
