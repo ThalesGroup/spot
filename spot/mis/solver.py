@@ -281,24 +281,20 @@ class Solver():
         self.num_requests = len(priorities)
         self.requests_positions = requests
 
-        print("discretize")
         # discretize data take opportunities
         collect_opportunities, sorted_collected_opportunities = self.discretize_dtos( \
                 dtos,
                 priorities)
 
-        print("collect")
         if greedy:
             opportunities = collect_opportunities
         else:
             opportunities = self.sample_opportunities(sorted_collected_opportunities)
 
-        print("generate graph")
 
         graph = self.graph_from_collect_opportunities(
             opportunities,
             priorities)
-        print(graph)
 
         if save_graphs:
             self.save_graph("total", graph)
@@ -313,13 +309,11 @@ class Solver():
 
         pos = nx.get_node_attributes(graph, "pos")
 
-        print("subgraphs")
         subgraphs = [graph.subgraph(c) for c in nx.connected_components(graph)]
 
         for graph_id, subgraph in enumerate(subgraphs):
             subgraph_len = subgraph.number_of_nodes()
 
-            print("subgraphs mis", graph_id, subgraph_len, len(subgraph.nodes()))
             if subgraph_len <= 2:
                 for node in subgraph.nodes():
                     mis += [pos.get(node)]
