@@ -38,10 +38,10 @@ class PulseSolver(RydbergSolver):
     def schedule_pulses(self, graph):
         """ Schedules pulses
         """
-        self.target_amplitude = 15
+        self.target_amplitude = 10
         initial_detuning = -40
         final_detuning = - initial_detuning
-        self.pulse_duration = 16000
+        self.pulse_duration = 4000 # 6000 max
         
         trap_ids = {v for v in self.embedder.traps}
         reg = self.embedder.layout.define_register(*trap_ids)
@@ -85,18 +85,28 @@ class PulseSolver(RydbergSolver):
                        name,
                        protocol="no-delay")
             
-    def run_simulation(self):
+    def run_simulation(self, subgraph_id=0):
         """
         """
+        count_dict={}
         backend = self.get_backend(self.seq)
 
-        try:
-            results = backend.run()
-        except:
-            print("Warning: graph skipped because qutip cannot solve.")
-            return None
+        if self.backend_type == "local_emulator":
 
-        count_dict = results.final_bitstrings
+            results = backend.run()
+            count_dict = results.final_bitstrings
+
+        elif self.backend_type == "emu_mps_remote_emulator" or\
+             self.backend_type == "fresnel_can1":
+            # in this case, we will load the results later, so we store the
+            # batch_id in memory
+
+            remote_results = backend.run(job_params=[{"runs": 100}])
+            batch_results = {}
+            batch_results["batch_id"] = remote_results.batch_id
+
+            with open(f"{self.prefix}_pulse_{subgraph_id}_batch_id.json", 'w') as f:
+                json.dump(batch_results, f)
 
         return count_dict
        
@@ -126,7 +136,6 @@ class PulseSolver(RydbergSolver):
                 solving_mis.append(node_value)
                 integer_mis.append(node_id)
 
-        print(solving_mis)
         return solving_mis, integer_mis
 
     def get_maximum_independent_set(
@@ -161,11 +170,7 @@ class PulseSolver(RydbergSolver):
             print("Could not find embedding")
             return []
 
-        # run simulation
-        try:
-            counts = self.run_simulation()
-        except:
-            return []
+        counts = self.run_simulation(subgraph_id=subgraph_id)
 
         # retrieve Maximum Independent Set with 2 notations:
         # -> solving_label_mis: for solver to retrive final configuratinos
@@ -182,7 +187,7 @@ class PulseSolver(RydbergSolver):
         pulse_results = {}
         pulse_results["nodes"] = solving_label_mis
 
-        with open(f"{self.prefix}_pulse_{subgraph_id}.json", 'w') as f:
+        with open(f"{self.prefix}_{subgraph_id}_pulse.json", 'w') as f:
             json.dump(pulse_results, f)
 
         return solving_label_mis
