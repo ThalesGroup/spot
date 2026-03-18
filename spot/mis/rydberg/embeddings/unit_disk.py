@@ -14,7 +14,6 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pylab as plt
 
 from pulser.register.special_layouts import TriangularLatticeLayout
-from pulser import Pulse, Sequence, Register
 
 from scipy.spatial import distance
 
@@ -29,8 +28,8 @@ class UnitDiskEmbedding:
         # layout
         self.layout_dim = layout_dim
 
-        self.num_traps = 500
-        self.spacing = 4.
+        self.num_traps = 61
+        self.spacing = 5.
         self.blockade_radius = 7.
         self.tolerance = 1E-1
 
@@ -71,7 +70,7 @@ class UnitDiskEmbedding:
         """
         results = {}
         results["optimized_layout"] = self.optimized_layout
-        results["traps_coords"] = self.layout.coords.tolist()
+        results["traps_coords"] = self.layout._coords.tolist()
         results["qubit_trap_id"] = self.traps
 
         with open(self.prefix+"_unit_disk_embedder.json", 'w') as output_file:
@@ -86,7 +85,7 @@ class UnitDiskEmbedding:
         for node_id in range(self.num_nodes):
             embedded_graph.add_node(
                     node_id,
-                    pos=self.layout.coords[self.traps[node_id]])
+                    pos=self.layout._coords[self.traps[node_id]])
 
         pos = nx.get_node_attributes(embedded_graph, "pos")
 
