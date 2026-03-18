@@ -8,17 +8,13 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import json
 
-from spot.mis.rydberg.solver import RydbergSolver
-
 import qoolqit
-from pulser.devices import AnalogDevice
-from pulser_pasqal.backends import EmuMPSBackend
 from mis import MISInstance, MISSolution
-from mis import MISSolver, MISInstance, BackendConfig, BackendType
 from qubosolver.config import SolverConfig
 from qubosolver import QUBOInstance
 from qubosolver.solver import QuboSolver
 
+from spot.mis.rydberg.solver import RydbergSolver
 
 class SpotQuboSolver(RydbergSolver):
     """
@@ -27,6 +23,13 @@ class SpotQuboSolver(RydbergSolver):
         """
         """
         super().__init__(params)
+
+    def plot_embedding(self, register, file_name="qubo_embedding.png"):
+        """
+        """
+        fig, ax = plt.subplots(1,1)
+        register.draw()
+        plt.savefig(file_name, dpi=300)
 
     def extract_maximum_independent_set(self, results, graph):
         """
@@ -43,7 +46,8 @@ class SpotQuboSolver(RydbergSolver):
     def get_maximum_independent_set(
         self,
         graph,
-        subgraph_id=0):
+        subgraph_id=0,
+        plot_embedding=True):
         """ 
         """
         instance = MISInstance(graph)
@@ -64,6 +68,13 @@ class SpotQuboSolver(RydbergSolver):
 
         solution = solver.solve()
 
+        if plot_embedding:
+            register = solver.embedding()
+
+            self.plot_embedding(
+                register,
+                f"{self.prefix}_{subgraph_id}_qubo_embedding.png")
+
         bitstrings_to_nodes = [
             row.nonzero(as_tuple=True)[0].tolist() \
             for row in solution.bitstrings if row.sum().item() > 0]
@@ -82,7 +93,7 @@ class SpotQuboSolver(RydbergSolver):
         qubo_results = {}
         qubo_results["nodes"] = solving_mis
         
-        with open(f"{self.prefix}_qubo_{subgraph_id}.json", 'w') as f:
+        with open(f"{self.prefix}_{subgraph_id}_qubo.json", 'w') as f:
             json.dump(qubo_results, f)
 
         return solving_mis
