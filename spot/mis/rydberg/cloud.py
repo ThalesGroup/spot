@@ -1,3 +1,8 @@
+# File   : cloud.py
+# Project: spot
+# Author : Michel Nowak <michel.nowak@thalesgroup.com>
+# Date   : 16.03.2026
+
 import os
 from pasqal_cloud import SDK
 
