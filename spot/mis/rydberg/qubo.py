@@ -36,7 +36,6 @@ class SpotQuboSolver(RydbergSolver):
         solving_mis = []
 
         for node_id, node_value in enumerate(pos.values()):
-            print(node_id, node_value)
             if node_id in results:
                 solving_mis.append(node_value)
         return solving_mis
