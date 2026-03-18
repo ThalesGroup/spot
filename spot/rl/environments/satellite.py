@@ -19,22 +19,16 @@ vm = orekit.initVM()
 from orekit.pyhelpers import setup_orekit_curdir
 orekit_data = os.environ.get("OREKIT_DATA")
 setup_orekit_curdir(orekit_data)
-from org.hipparchus.geometry.euclidean.threed import RotationConvention, RotationOrder, Vector3D
+from org.hipparchus.geometry.euclidean.threed import RotationConvention, RotationOrder
 from org.orekit.attitudes import TargetPointing, LofOffset
-from org.orekit.data import DataSource
-from org.orekit.files.general import EphemerisFileParser
 from org.orekit.bodies import OneAxisEllipsoid
 from org.orekit.frames import FramesFactory, LOFType
-from org.orekit.orbits import CartesianOrbit
-from org.orekit.propagation import SpacecraftState
 from org.orekit.propagation.analytical import Ephemeris
-from org.orekit.time import AbsoluteDate, TimeScalesFactory, DateComponents
-from org.orekit.utils import IERSConventions, Constants, PVCoordinates
+from org.orekit.utils import IERSConventions, Constants
 from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
 from java.util import ArrayList
 
 from spot.rl.environments.utils import datetime_to_absolutedate
-from spot.rl.environments.utils import absolutedate_to_datetime
 from spot.rl.environments.utils import compute_tmax
 
 class SatelliteEnvironment(Env):
