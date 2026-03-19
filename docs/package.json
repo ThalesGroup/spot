@@ -2,7 +2,7 @@
   "name": "spot_docs",
   "description": "Documentation of spot library",
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "type": "module",
   "scripts": {
     "docs:build": "vuepress-vite build src",
