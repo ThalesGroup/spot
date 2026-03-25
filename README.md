@@ -36,3 +36,7 @@ If you are interested in contributing to the SPOT project, start by reading the 
 
 The licence of the code can be found here [LICENSE](/LICENSE) and is Apache 2.0.
 Each dependency of the code has its own licence.
+
+## Project
+This repository is part of the following collaborative project:
+Towards Operational Quantum Computing for Earth Observation (QR4EO) 
