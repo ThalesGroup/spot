@@ -12,7 +12,7 @@ The [LICENSE](/LICENSE.md) is Apache 2.0
 
 ### Testing
 Before commiting a development, always test one example which will test the
-feature. If it's not possible, try writing an example that will do!s.
+feature. If it's not possible, try writing an example that will do.
 
 #### Running unit tests
 We do not have unit tests yet.
