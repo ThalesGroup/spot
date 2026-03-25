@@ -1,5 +1,5 @@
 # SPOT
-<p align="center">
+<p align="center", width=50%>
     <img src="figures/spot_logo.png" alt="spot_logo">
 </p>
 
