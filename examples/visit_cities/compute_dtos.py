@@ -18,7 +18,6 @@
 #  limitations under the License.
 
 import numpy as np
-import pickle
 
 from spot.rl.environments.satellite import SatelliteEnvironment
 
