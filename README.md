@@ -16,5 +16,5 @@ If you are interested in contributing to the XXX project, start by reading the [
 
 ## License
 
-The licence of the code can be found here [LICENSE](/LICENSE).
+The licence of the code can be found here [LICENSE](/LICENSE) and is Apache 2.0.
 Each dependency of the code has its own licence.
