@@ -4,9 +4,7 @@ export default sidebar({
   "/":[
     '/satellite-mission-planning',
     '/rydberg-atoms',
-    '/state-of-the-art',
     '/solvers',
     '/numerical-experiments',
-    '/dashboard',
   ],
 });
