@@ -33,7 +33,7 @@ security issue.
 
 ## Security related configuration
 
-If you intend to use PASCAL cloud, you will have to provide with credentials:
+If you intend to use PASQAL cloud, you will have to provide with credentials:
 1. PASQAL account username
 2. PASQAL project token
 3. PASQAL password.
