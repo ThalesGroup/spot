@@ -56,7 +56,7 @@ class CollectOpportunity:
 class Solver():
     """ Solver base class
         """
-            def __init__(self, params=None):
+    def __init__(self, params=None):
         """ Initializer
         """
         self.delta_t=120
@@ -246,7 +246,7 @@ class Solver():
 
                     if r1==r2:
                         graph.add_edge(index1, index2)
-                elif method=="constraints"::
+                elif method=="constraints":
 
                     agility_constraint = self.get_agility_constraint(op1, op2)
                     repetition_constraint= self.get_repetition_constraint(op1, op2)
