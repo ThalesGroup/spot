@@ -40,3 +40,6 @@ Each dependency of the code has its own licence.
 ## Project
 This repository is part of the following collaborative project:
 Towards Operational Quantum Computing for Earth Observation (QR4EO) 
+The connection to the PASQAL cloud was provided in the context of this project.
+It is not provided by this repository.
+
