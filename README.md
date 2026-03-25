@@ -1,6 +1,6 @@
 # SPOT
-<p align="center", width=50%>
-    <img src="figures/spot_logo.png" alt="spot_logo">
+<p align="center">
+    <img src="figures/spot_logo.png" alt="spot_logo", style="width:50%">
 </p>
 
 ## Get started
