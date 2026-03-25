@@ -3,7 +3,6 @@
 # Goal
 Given a certain set of regionns on earth - refered to as observation requests - and a given satelllite constellation, our goal is to assign these requests to each sattellite so that a maximum number of metrics are satisfied.
 
-
 ![Earth Observation Requests](/earth_requests.png)
 
 ## Constraints
@@ -11,8 +10,6 @@ In order to schedule a reliable plan for the next day, the operators need to res
 
 ### Maneuver preparation
 The satellites we are working with are supposed to carry onboard optical instruments that can take pictures with a depointing angle 
-
-![Maneuver](/satellite_request.png)
 
 ### Observation requests' priorities
 Operators need to prioritize requests which are the most important, and postpone those not affoordable yet because of time constraints.
@@ -49,15 +46,6 @@ requests = random_cities()
 ```python
 satellite.missions = missions 
 dtos, positions = satellite.compute_data_take_opportinity()
-
-```
-
-### Prepare constellation of satellites
-
-```python
-from sport.rl.environments.consteellation import ConstellationEnvironment
-
-constellation = ConstellationEnvironment(list_of_satellites)
 
 ```
 
