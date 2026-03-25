@@ -1,11 +1,20 @@
-# SPOT
 <p align="center">
     <img src="figures/spot_logo.png" alt="spot_logo", style="width:50%">
 </p>
 
-## Get started
 The SPOT package is intended to solve Satellite Mission Planning with Rydberg
 Atoms.
+We consider that we have a certain number of satellites at disposition.
+Each satellite has an optical instrument on board and can take pictures of Earth
+while it passes over a region of interest.
+A mission consists in a set of observation requests.
+Each day, we need to assign the requests for each of our satellites.
+
+There can be many requests per day to assign to each satellites.
+The problem can be formulated as a Maximum Independent Set problem on a graph.
+SPOT generates the graph by respecting the satellite agility constraint.
+
+## Get started
 
 <p align="center">
     <img src="figures/render_satellite_environment.gif" alt="render_satellite">
