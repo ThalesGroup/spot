@@ -1,7 +1,6 @@
 # Rydberg Atoms
 
 ## Motivation
-
 Quantum hardware relying on cold atoms are one of the most promising ones. More inerestingly, they provide with two levels of usage. The first level is the universal gate-based approach, which is under investigation by the scientific community.
 
 The second level - referred to as the analog mode - is a computing paradigm closest to the physics at play at the atomic level.  In this work, we focus our efforts in investigating the potential of the latter mode to solve optimization problems.
@@ -46,6 +45,10 @@ traps = embedder.get_traps()
 This allows to recover the traps and place the atoms so as to recover the initial graph with a unit disk approximation.
 
 ![Embedded graph](/pulse_solver_0_embedding.png)
+
+Then, we can use sample atoms by impinging a laser on this layout and recover the Maximum Independent Set apporximation.
+
+![Embedded graph](/pulse_solver_0_sampled_mis.png)
 
 ### QUBO Solvers
 A recent full-stack implementation of [QUBO-Solver](https://github.com/pasqal-io/qubo-solver/) developped by [PASQAL](https://www.pasqal.com/) allows to solve optimization problems directly with a connection to their [cloud access](https://www.pasqal.com/fr/solutions/cloud/)
