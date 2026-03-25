@@ -1,7 +1,7 @@
 # Project: spot
 # File   : solver.py
 # Author : Michel Nowak <michel.nowak@thalesgroup.com>
-# Date   : 16.10.23025
+# Date   : 16.10.2025
 #
 # Copyright 2024 Thales
 #
