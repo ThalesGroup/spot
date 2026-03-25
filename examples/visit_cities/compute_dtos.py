@@ -1,3 +1,22 @@
+# File   : compute_dtos.py
+# Project: spot
+# Author : Michel Nowak <michel.nowak@thalesgroup.com>
+# Date   : 22.03.2026
+#
+# Copyright 2024 Thales
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 import numpy as np
 import pickle
 
@@ -22,9 +41,10 @@ def prepare_satellite(satellite_id):
 
 if __name__ == "__main__":
 
-    for num_requests in [50]:
+    for num_requests in [1000]:
         requests = np.genfromtxt(f"data/requests_{num_requests}.txt")
         for satellite_id in [1, 2, 3, 4, 5]:
+            print(satellite_id)
             satellite = prepare_satellite(satellite_id)
             dtos = satellite.compute_data_take_opportunity(requests)
             np.savetxt(f"data/dtos_{num_requests}_{satellite_id}.txt", dtos)

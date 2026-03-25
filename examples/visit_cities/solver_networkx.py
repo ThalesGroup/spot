@@ -1,3 +1,21 @@
+# File   : solver_networkx.py
+# Project: spot
+# Author : Michel Nowak <michel.nowak@thalesgroup.com>
+# Date   : 22.03.2026
+#
+# Copyright 2024 Thales
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 import numpy as np
 import pickle
 
@@ -38,9 +56,8 @@ def solve(requests, satellites, delta_t):
 
 if __name__ == "__main__":
 
-    num_requests = 50
-    num_satellites = 5
-    delta_t = 10
+    num_requests = 500
+    delta_t = 20
 
     # ISS station
     tle_string = ["1 25544U 98067A   17314.40254821  .00006490  00000-0  10525-3 0 9997",
