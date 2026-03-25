@@ -2,6 +2,20 @@
 # File   : unit_disk.py
 # Author : Michel Nowak <michel.nowak@thalesgroup.com>
 # Date   : 16.10.2025
+#
+# Copyright 2024 Thales
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 
 import numpy as np
 import networkx as nx
@@ -22,7 +36,7 @@ import json
 class UnitDiskEmbedding:
     """ Base class for unit disk embedding
     """
-    def __init__(self, layout_dim):
+    def __init__(self, layout_dim, device=None):
         """ initializer
         """
         # layout
@@ -32,10 +46,17 @@ class UnitDiskEmbedding:
         self.spacing = 5.
         self.blockade_radius = 7.
         self.tolerance = 1E-1
+        self.layout = device
 
-        self.layout = TriangularLatticeLayout(
-                n_traps=self.num_traps,
-                spacing=self.spacing)
+        print("MIN LAYOUT FILLING", device.min_layout_filling)
+        if device is None:
+            self.layout = TriangularLatticeLayout(
+                    n_traps=self.num_traps,
+                    spacing=self.spacing)
+        else:
+            self.layout = device.calibrated_register_layouts[
+                "TriangularLatticeLayout(61, 5.0µm)"]
+
 
     def squared_distance(self, i, j):
         """ Compute the squared distance between atoms
@@ -70,11 +91,15 @@ class UnitDiskEmbedding:
         """
         results = {}
         results["optimized_layout"] = self.optimized_layout
-        results["traps_coords"] = self.layout._coords.tolist()
+        results["traps_coords"] = self.layout._coords
         results["qubit_trap_id"] = self.traps
 
-        with open(self.prefix+"_unit_disk_embedder.json", 'w') as output_file:
-            json.dump(results, output_file, indent=4)
+        with open(self.prefix+"_unit_disk_embedder.json", 'w') as f:
+            json.dump(
+                    results,
+                    f,
+                    indent=4,
+                    sort_keys=True)
 
     def get_embedded_graph(self):
         """

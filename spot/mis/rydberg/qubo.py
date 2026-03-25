@@ -2,6 +2,21 @@
 # File   : qubo.py
 # Author : Michel Nowak <michel.nowak@thalesgroup.com>
 # Date   : 16.10.2025
+#
+# Copyright 2024 Thales
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -94,6 +109,10 @@ class SpotQuboSolver(RydbergSolver):
         qubo_results["nodes"] = solving_mis
         
         with open(f"{self.prefix}_{subgraph_id}_qubo.json", 'w') as f:
-            json.dump(qubo_results, f)
+            json.dump(
+                qubo_results,
+                f,
+                indent=4,
+                sort_keys=True)
 
         return solving_mis
