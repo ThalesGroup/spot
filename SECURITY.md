@@ -11,35 +11,39 @@ Describe here all the security policies in place on this repository to help your
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+Only latest version is being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-Tell them where to go, how often they can expect to get an update on a reported vulnerability, what to expect if the vulnerability is accepted or declined, etc.
-
-You can ask for support by contacting oss@thalesgroup.com
+If you find a security vulnerability, please contact oss@thalesgroup.com.
 
 ## Disclosure policy
 
-Define the procedure for what a reporter who finds a security issue needs to do in order to fully disclose the problem safely, including who to contact and how.
+In your report, please consider providing with:
+1. The version you are working with (that can be found with git log)
+2. If you have found the first commit that introduced the vulnerability, please
+provide with the commit number.
+3. If you found a fix to the vulnerability, please use a pull request, as in the
+[contributing](/CONTRIBUTING.md)
 
 ## Security Update policy
 
-Define how you intend to update users about new security vulnerabilities as they are found.
+We will update by replying as soon as possible to the person who has found a
+security issue.
 
 ## Security related configuration
 
-Settings users should consider that would impact the security posture of deploying this project, such as HTTPS, authorization and many others.
+If you intend to use PASCAL cloud, you will have to provide with credentials:
+1. PASQAL account username
+2. PASQAL project token
+3. PASQAL password.
+
+It is recommended to provide the password when it is asked by the cloud API,
+instead of storing it somewhere.
+In our experiments, we stored the data in an environment variable in order to
+run multiple graphs sequentially without providing the password each time.
 
 ## Known security gaps & future enhancements
 
-Security improvements you haven’t gotten to yet.
-Inform users those security controls aren’t in place, and perhaps suggest they contribute an implementation
+None
+
