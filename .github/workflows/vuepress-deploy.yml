@@ -22,6 +22,7 @@ jobs:
         with:
           # choose node.js version to use
           node-version: 22
+          cache: npm
 
       - name: Install deps
         run: cd docs/ && npm install --frozen-lockfile
