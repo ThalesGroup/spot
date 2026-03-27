@@ -26,7 +26,7 @@ which we include the visiting cities one.
 
 ## Documentation
 
-Documentation is available at [spot/docs](https://github.com/ThalesGroup/spot.github.io).
+Documentation is available at [spot/docs](https://thalesgroup.github.io/spot/).
 
 ## Contributing
 
