@@ -24,7 +24,7 @@ jobs:
           node-version: 22
 
       - name: Install deps
-        run: npm install --frozen-lockfile
+        run: cd docs/ && npm install --frozen-lockfile
 
       # run build script
       - name: Build VuePress site
