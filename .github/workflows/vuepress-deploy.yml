@@ -22,15 +22,13 @@ jobs:
         with:
           # choose node.js version to use
           node-version: 22
-          # cache deps for npm
-          cache: npm
 
       - name: Install deps
         run: npm install --frozen-lockfile
 
       # run build script
       - name: Build VuePress site
-        run: npm docs:build
+        run: cd docs/ && npm docs:build
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
