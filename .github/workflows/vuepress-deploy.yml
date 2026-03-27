@@ -7,11 +7,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: vuepress-deploy
-      uses: jenkey2011/vuepress-deploy@master
+    - name: Deploy to GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v4
+      with:
+        # Deploy to the gh-pages branch
+        target_branch: github-pages
+        # VuePress default output directory
+        build_dir: docs/.vuepress/dist
       env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        TARGET_REPO: ThalesGroup/spot
-        TARGET_BRANCH: gh-pages
-        BUILD_SCRIPT: cd docs/ && npm install && npm run docs:build
-        BUILD_DIR: docs/src/.vuepress/dist/
+        # @see https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
